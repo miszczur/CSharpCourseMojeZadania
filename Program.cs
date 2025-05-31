@@ -16,11 +16,6 @@ class Program
 {
     static void Main(string[] args)
     {
-
-        double dd = 20;
-        Console.WriteLine(dd);
-        TemperatureConverter.ConvertFahrenheitToCelsius(100, ref dd);
-        Console.WriteLine(dd);
     }
 }
 
