@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks.Dataflow;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -25,7 +26,12 @@ namespace CSharpCourseMojeZadania
             //ProjectData(googleApps);
             //DivideData(googleApps);
             //OrderData(googleApps);
-            DataSetOperation(googleApps);
+            //DataSetOperation(googleApps);
+
+
+            //DataVerification(googleApps);
+            //GroupData(googleApps);
+            GroupDataOperations(googleApps);
         }
 
 
@@ -125,6 +131,74 @@ namespace CSharpCourseMojeZadania
 
 
 
+        static void DataVerification(IEnumerable<GoogleApp> googleApps)
+        {
+            var allOperatorResult = googleApps.Where(a => a.Category == Category.WEATHER)
+            .All(a => a.Reviews > 20);
+
+            Console.WriteLine($"allOperaotrResult: {allOperatorResult}");
+
+            Console.WriteLine();
+
+            var anyOperatorResult = googleApps.Where(a => a.Category == Category.WEATHER)
+                .Any(a => a.Reviews > 2_000_000);
+            Console.WriteLine($"AnyOperatorResult: {anyOperatorResult}");
+
+
+        }
+        static void GroupData(List<GoogleApp> googleApps)
+        {
+            //var categoryGroup = googleApps.GroupBy(app => app.Category);
+
+            //foreach (var group in categoryGroup)
+            //{
+            //    var apps = group.ToList();
+            //    Console.WriteLine($"Category: {group.Key} - Count: {group.Count()}");
+            //    Display(apps);
+            //    Console.WriteLine();
+            //}
+
+            var categoryGroup = googleApps.GroupBy(app => new { app.Category,app.Type});
+            foreach (var group in categoryGroup)
+            {
+                var key= group.Key;
+                var apps = group.ToList();
+                Console.WriteLine($"Category: {group.Key.Category} - Type: {group.Key.Type} - Count: {group.Count()}");
+                Display(apps);
+                Console.WriteLine();
+            }
+
+            // var artAndDesignGroup = categoryGroup.First(g => g.Key == Category.ART_AND_DESIGN);
+
+
+            //var apps = artAndDesignGroup.Select(app => app);
+            //var apps = artAndDesignGroup.ToList();
+            //Display(apps);
+
+        }
+        static void GroupDataOperations(List<GoogleApp> googleApps)
+        {
+            var categoryGroup = googleApps
+                .GroupBy(app => app.Category);
+                //.Where(g=> g.Min(a => a.Reviews) >= 10);
+
+            foreach (var group in categoryGroup)
+            {
+                var averageReviews = group.Average(g => g.Reviews);
+                var minReviews = group.Min(g =>g.Reviews);
+                var maxReviews = group.Max(g => g.Reviews);
+
+                var reviewsCount = group.Sum(g => g.Reviews);
+
+                var allAppsFromGroupHaveRatingOfThree = group.All(a=>a.Rating > 3.0);
+                Console.WriteLine($"Category: {group.Key}");
+                Console.WriteLine($"averageReviews: {averageReviews}");
+                Console.WriteLine($"minReviews: {minReviews}");
+                Console.WriteLine($"maxReviews: {maxReviews}");
+                Console.WriteLine($"allAppsFromGroupHaveRatingOfThree: {allAppsFromGroupHaveRatingOfThree}");
+                Console.WriteLine( );
+            }
+        }
 
 
 
