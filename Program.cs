@@ -18,7 +18,9 @@ namespace CSharpCourseMojeZadania
     {
         static void Main(string[] args)
         {
-            string csvPath = @"C:\Users\Jakub\source\repos\CSharpCourseMojeZadania\googleplaystore1.csv";
+            string csvPath = Directory.GetCurrentDirectory() + @"\googleplaystore1.csv";
+            //string csvPath = @"C:\Users\Jakub\source\repos\CSharpCourseMojeZadania\googleplaystore1.csv";
+           
             var googleApps = LoadGoogleAps(csvPath);
 
             //Display(googleApps);
@@ -33,8 +35,6 @@ namespace CSharpCourseMojeZadania
             //GroupData(googleApps);
             GroupDataOperations(googleApps);
         }
-
-
 
         static void GetData(IEnumerable<GoogleApp> googleApps)
         {
